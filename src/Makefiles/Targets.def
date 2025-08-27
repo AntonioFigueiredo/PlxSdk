@@ -106,7 +106,7 @@ RestoreDriverObjects:
 #=============================================================================
 
 DisplayParameters:
-	@clear
+	@echo
 	@echo
 	@echo Build: $(ImageName)
 	@echo
