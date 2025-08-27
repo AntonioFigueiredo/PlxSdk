@@ -18,6 +18,7 @@ PlxSDK
 
 
 %build
+export TERM=dumb
 make -C PlxApi PLX_SDK_DIR=$(pwd)
 
 make -C Samples PLX_SDK_DIR=$(pwd)
