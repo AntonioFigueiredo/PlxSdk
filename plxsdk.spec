@@ -1,5 +1,5 @@
 Name:           plxsdk
-BuildRequires:  kernel-devel, gcc, make, udev
+BuildRequires:  gcc, make
 License:        GPL-2.0+
 Summary:        plxsdk
 Version:        0.1
@@ -16,27 +16,30 @@ PlxSDK
 %prep
 %setup -q
 
+
 %build
-for kver in $(ls /usr/src/kernels); do
-    mkdir -p obj/$kver
-    cp -a Makefile PlxApi/ Samples/ obj/$kver/
-    make -C /usr/src/kernels/$kver M=$PWD/obj/$kver modules EXTRA_CFLAGS='-DRHEL_KERNEL'
-done
+make -C PlxApi
+
+make -C Samples
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/lib/modules
-for kver in $(ls /usr/src/kernels); do
-    make -C /usr/src/kernels/$kver M=$PWD/obj/$kver modules_install INSTALL_MOD_PATH=%{buildroot} DEPMOD=/bin/true
-done
 
-# Remove kernel-generated metadata files
-find %{buildroot}/lib/modules -type f \
-  \( -name 'modules.*' ! -name '*.ko' \) -delete
+mkdir -p %{buildroot}/usr/lib64
+cp PlxApi/libPlxApi.so %{buildroot}/usr/lib64/ || true
+cp PlxApi/libPlxApi.a %{buildroot}/usr/lib64/ || true
+
+mkdir -p %{buildroot}/usr/share/plxsdk/examples
+cp -a Samples/* %{buildroot}/usr/share/plxsdk/examples/
 
 %files
 %defattr(-,root,root)
-/lib/modules/*/extra/plxsdk.ko
 
+/usr/lib64/libPlxApi.so
+/usr/lib64/libPlxApi.a
+
+/usr/include/plxsdk/*
+
+/usr/share/plxsdk/examples/*
 
 %changelog
