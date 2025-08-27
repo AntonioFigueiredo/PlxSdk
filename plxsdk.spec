@@ -1,5 +1,5 @@
 Name:           plxsdk
-BuildRequires:  dkms, kernel-devel, gcc, make, udev
+BuildRequires:  kernel-devel, gcc, make, udev
 License:        GPL-2.0+
 Summary:        plxsdk
 Version:        0.1
@@ -27,7 +27,7 @@ done
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/lib/modules
 for kver in $(ls /usr/src/kernels); do
-    make -C /usr/src/kernels/$kver M=$PWD/obj/$kver modules_install INSTALL_MOD_PATH=%{buildroot}
+    make -C /usr/src/kernels/$kver M=$PWD/obj/$kver modules_install INSTALL_MOD_PATH=%{buildroot} DEPMOD=/bin/true
 done
 
 # Remove kernel-generated metadata files
