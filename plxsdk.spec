@@ -19,7 +19,7 @@ PlxSDK
 %build
 for kver in $(ls /usr/src/kernels); do
     mkdir -p obj/$kver
-    cp -a COPYING Makefile PlxApi/ Samples/ obj/$kver/
+    cp -a COPYING Makefile PlxApi Samples obj/$kver/
     make -C /usr/src/kernels/$kver M=$PWD/obj/$kver modules EXTRA_CFLAGS='-DRHEL_KERNEL'
 done
 
