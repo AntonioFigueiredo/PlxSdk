@@ -21,8 +21,6 @@ PlxSDK
 export TERM=dumb
 make -C PlxApi PLX_SDK_DIR=$(pwd)
 
-make -C Samples/ApiTest PLX_SDK_DIR=$(pwd)
-
 %install
 rm -rf %{buildroot}
 
