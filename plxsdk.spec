@@ -18,9 +18,9 @@ PlxSDK
 
 
 %build
-make -C PlxApi
+make -C PlxApi PLX_SDK_DIR=$(pwd)
 
-make -C Samples
+make -C Samples PLX_SDK_DIR=$(pwd)
 
 %install
 rm -rf %{buildroot}
