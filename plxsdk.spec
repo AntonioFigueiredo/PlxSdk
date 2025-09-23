@@ -39,6 +39,6 @@ cp PlxApi/Library/PlxApi.a %{buildroot}/usr/lib64/ || true
 
 /usr/include/plxsdk/*
 
-/usr/share/plxsdk/examples/*
+#/usr/share/plxsdk/examples/*
 
 %changelog
