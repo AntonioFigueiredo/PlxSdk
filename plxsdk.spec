@@ -21,12 +21,11 @@ PlxSDK
 export TERM=dumb
 make -C PlxApi PLX_SDK_DIR=$(pwd)
 
-
 %install
 rm -rf %{buildroot}
 
 mkdir -p %{buildroot}/usr/lib64
-cp PlxApi/libPlxApi.so %{buildroot}/usr/lib64/ || true
+#cp PlxApi/libPlxApi.so %{buildroot}/usr/lib64/ || true
 cp PlxApi/libPlxApi.a %{buildroot}/usr/lib64/ || true
 
 mkdir -p %{buildroot}/usr/share/plxsdk/examples
