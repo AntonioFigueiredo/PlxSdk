@@ -26,7 +26,7 @@ rm -rf %{buildroot}
 
 mkdir -p %{buildroot}/usr/lib64
 #cp PlxApi/libPlxApi.so %{buildroot}/usr/lib64/ || true
-cp Library/libPlxApi.a %{buildroot}/usr/lib64/ || true
+cp Library/PlxApi.a %{buildroot}/usr/lib64/ || true
 
 #mkdir -p %{buildroot}/usr/share/plxsdk/examples
 #cp -a Samples/* %{buildroot}/usr/share/plxsdk/examples/
@@ -34,8 +34,8 @@ cp Library/libPlxApi.a %{buildroot}/usr/lib64/ || true
 %files
 %defattr(-,root,root)
 
-/usr/lib64/libPlxApi.so
-/usr/lib64/libPlxApi.a
+#/usr/lib64/PlxApi.so
+/usr/lib64/PlxApi.a
 
 /usr/include/plxsdk/*
 
