@@ -28,6 +28,9 @@ mkdir -p %{buildroot}/usr/lib64
 #cp PlxApi/libPlxApi.so %{buildroot}/usr/lib64/ || true
 cp PlxApi/Library/PlxApi.a %{buildroot}/usr/lib64/ || true
 
+mkdir -p %{buildroot}/usr/include/plxsdk
+cp -a Include/* %{buildroot}/usr/include/plxsdk/
+
 #mkdir -p %{buildroot}/usr/share/plxsdk/examples
 #cp -a Samples/* %{buildroot}/usr/share/plxsdk/examples/
 
