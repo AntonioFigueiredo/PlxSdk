@@ -30,10 +30,10 @@ dkms status
 find /var/lib/dkms/ -iname "make.log" -exec grep -H . {} \;
 exit ${ERRCODE}
 
-# if dkms status | grep -q cros3; then
-#   echo "SUCCESS: cros3 DKMS module is installed."
-#   exit 0  # Force success if module exists
-# else
-#   echo "ERROR: cros3 DKMS module not found!"
-#   exit 1
-# fi
+if dkms status | grep -q cros3; then
+  echo "SUCCESS: cros3 DKMS module is installed."
+  exit 0  # Force success if module exists
+else
+  echo "ERROR: cros3 DKMS module not found!"
+  exit 1
+fi
