@@ -1,0 +1,17 @@
+Source: plxsdk
+Section: kernel
+Priority: optional
+Maintainer: Antonio Figueiredo <figueiredo@physik.uni-bonn.de>
+Build-Depends: debhelper-compat (= 13), dkms, build-essential, linux-headers-generic
+Standards-Version: 4.5.1
+Rules-Requires-Root: no
+Homepage: https://github.com/AntonioFigueiredo/PlxSdk
+Vcs-Browser: https://github.com/AntonioFigueiredo/PlxSdk
+Vcs-Git: https://github.com/AntonioFigueiredo/PlxSdk
+
+Package: plxsdk-dkms
+Architecture: all
+Depends: ${misc:Depends}, dkms
+Recommends: linux-headers-amd64 | linux-headers-686-pae | linux-headers-686 | linux-headers
+Provides: plxsdk
+Description: PLX SDK
