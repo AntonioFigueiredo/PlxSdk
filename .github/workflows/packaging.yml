@@ -16,13 +16,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set executable permissions for scripts
-        run: chmod +x .scripts/*.sh
-        
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           path: source_dir
+      
+      - name: Set executable permissions for scripts
+        run: chmod +x source_dir/.scripts/*.sh
 
       - name: Get Time
         id: get-time
