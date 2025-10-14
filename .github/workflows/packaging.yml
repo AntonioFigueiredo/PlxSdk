@@ -82,61 +82,61 @@ jobs:
           path: lintian
           retention-days: 2
 
-  # test-dkms:
-  #   needs: [ build-package ]
-  #   runs-on: ubuntu-latest
+  test-dkms:
+    needs: [ build-package ]
+    runs-on: ubuntu-latest
 
-  #   strategy:
-  #     matrix:
-  #       container: 
-  #         - "debian:stable"
-  #         - "debian:bullseye"
-  #         - "debian:unstable"
-  #         - "debian:testing"
+    strategy:
+      matrix:
+        container: 
+          - "debian:stable"
+          - "debian:bullseye"
+          - "debian:unstable"
+          - "debian:testing"
 
-  #   container:
-  #     image: ${{ matrix.container }}
+    container:
+      image: ${{ matrix.container }}
 
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
-  #       with:
-  #         path: source_dir
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: source_dir
 
-  #     - name: Download all Debian packaging workflow run artifacts
-  #       uses: actions/download-artifact@v4
+      - name: Download all Debian packaging workflow run artifacts
+        uses: actions/download-artifact@v4
 
-  #     - name: Install DKMS
-  #       run: apt-get update && apt-get install -y dkms
+      - name: Install DKMS
+        run: apt-get update && apt-get install -y dkms
 
-  #     - name: Install package and compile on ${{ matrix.container }}
-  #       run: ./source_dir/.scripts/testdkms.sh
+      - name: Install package and compile on ${{ matrix.container }}
+        run: ./source_dir/.scripts/testdkms.sh
 
-  # create-aptly-repo:
-  #   needs: [ build-package ]
-  #   runs-on: ubuntu-latest
+  create-aptly-repo:
+    needs: [ build-package ]
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
-  #       with:
-  #         path: source_dir
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: source_dir
 
-  #     - name: Download all Debian packaging workflow run artifacts
-  #       uses: actions/download-artifact@v4
+      - name: Download all Debian packaging workflow run artifacts
+        uses: actions/download-artifact@v4
 
-  #     - name: Prepare aptly repo
-  #       uses: docker://registry.salsa.debian.org/salsa-ci-team/pipeline/aptly
-  #       with:
-  #         entrypoint: /bin/bash
-  #         args: source_dir/.scripts/prepaptly.sh
+      - name: Prepare aptly repo
+        uses: docker://registry.salsa.debian.org/salsa-ci-team/pipeline/aptly
+        with:
+          entrypoint: /bin/bash
+          args: source_dir/.scripts/prepaptly.sh
 
-  #     - name: Upload Repo
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: ${{ runner.os }}-${{ env.RELEASE }}-repo
-  #         path: debrepo.tar.gz
-  #         retention-days: 2
+      - name: Upload Repo
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ runner.os }}-${{ env.RELEASE }}-repo
+          path: debrepo.tar.gz
+          retention-days: 2
 
   build-rpm:
     runs-on: ubuntu-latest
