@@ -16,6 +16,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set executable permissions for scripts
+        run: chmod +x .scripts/*.sh
+        
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
