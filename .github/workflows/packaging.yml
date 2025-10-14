@@ -3,6 +3,10 @@ name: Packaging
 on:
   push
 
+permissions:
+  checks: write
+  contents: read
+
 env:
   RELEASE: unstable
   PROJECT_NAME: plxsdk
