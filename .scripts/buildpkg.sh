@@ -10,7 +10,7 @@ export WORKING_DIR=${TOP_DIR}/debian/output
 export SRC_DIR_NAME=source_dir
 
 echo "deb http://deb.debian.org/debian unstable main" > /etc/apt/sources.list
-echo "deb-src http://deb.debian.org/debian unstable main" >> /etc/apt/sources.list
+#echo "deb-src http://deb.debian.org/debian unstable main" >> /etc/apt/sources.list
 
 apt-get update
 git config --global --add safe.directory /github/workspace/source_dir
