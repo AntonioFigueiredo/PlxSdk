@@ -35,7 +35,8 @@ apt-get update && eatmydata apt-get install --no-install-recommends -y \
      equivs \
      build-essential \
      dh-dkms \
-     dkms
+     dkms \
+     linux-libc-dev
 
 # Install build dependencies directly
 eatmydata mk-build-deps --install --remove --tool "apt-get -o Debug::pkgProblemResolver=yes -y" debian/control
