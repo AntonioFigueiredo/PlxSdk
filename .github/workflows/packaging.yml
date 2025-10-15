@@ -21,8 +21,8 @@ jobs:
         with:
           path: source_dir
       
-      - name: Set executable permissions for scripts
-        run: chmod +x source_dir/.scripts/*.sh
+      - name: Set executable permissions for testdkms.sh
+        run: chmod +x source_dir/.scripts/testdkms.sh
 
       - name: Get Time
         id: get-time
