@@ -20,9 +20,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: source_dir
-      
-      - name: Set executable permissions for testdkms.sh
-        run: chmod +x source_dir/.scripts/testdkms.sh
 
       - name: Get Time
         id: get-time
