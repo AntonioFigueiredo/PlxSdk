@@ -28,10 +28,17 @@ git archive HEAD | bzip2 > ../plxsdk_0.1.0.orig.tar.bz2
 #sed -n '/^deb\s/s//deb-src /p' /etc/apt/debian.sources > /etc/apt/sources.list.d/deb-src.list # debug: different in new debian versions
 if [ -f /etc/apt/sources.list ]; then
     sed -n '/^deb\s/s//deb-src /p' /etc/apt/sources.list > /etc/apt/sources.list.d/deb-src.list
-elif [ -d /etc/apt/sources.list.d ] && [ "$(ls -A /etc/apt/sources.list.d/*.list 2>/dev/null)" ]; then
-    for file in /etc/apt/sources.list.d/*.list; do
-        sed -n '/^deb\s/s//deb-src /p' "$file" >> /etc/apt/sources.list.d/deb-src.list
-     done
+elif [ -d /etc/apt/sources.list.d ]; then
+    if [ "$(ls -A /etc/apt/sources.list.d/*.list 2>/dev/null)" ]; then
+        for file in /etc/apt/sources.list.d/*.list; do
+            sed -n '/^deb\s/s//deb-src /p' "$file" >> /etc/apt/sources.list.d/deb-src.list
+        done
+    fi
+    if [ "$(ls -A /etc/apt/sources.list.d/*.sources 2>/dev/null)" ]; then
+        for file in /etc/apt/sources.list.d/*.sources; do
+            awk '/^Types:/ {if ($2 ~ /deb$/) print $0}' "$file" >> /etc/apt/sources.list.d/deb-src.list
+        done
+    fi
 fi
 
 apt-get update && eatmydata apt-get install --no-install-recommends -y \
