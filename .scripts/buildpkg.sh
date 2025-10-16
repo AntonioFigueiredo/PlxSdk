@@ -25,12 +25,13 @@ cd ${WORKING_DIR}/${SRC_DIR_NAME}
 git archive HEAD | bzip2 > ../plxsdk_0.1.0.orig.tar.bz2
 
 # Add deb-src entries
-sed -n '/^deb\s/s//deb-src /p' /etc/apt/debian.sources > /etc/apt/sources.list.d/deb-src.list # debug: different in new debian versions
+#sed -n '/^deb\s/s//deb-src /p' /etc/apt/debian.sources > /etc/apt/sources.list.d/deb-src.list # debug: different in new debian versions
 if [ -f /etc/apt/sources.list ]; then
     sed -n '/^deb\s/s//deb-src /p' /etc/apt/sources.list > /etc/apt/sources.list.d/deb-src.list
 else
      sed -n '/^deb\s/s//deb-src /p' /etc/apt/debian.sources > /etc/apt/sources.list.d/deb-src.list
 fi
+
 apt-get update && eatmydata apt-get install --no-install-recommends -y \
      aptitude \
      devscripts \
