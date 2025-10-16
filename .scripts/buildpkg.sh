@@ -31,6 +31,7 @@ if [ -f /etc/apt/sources.list ]; then
 elif [ -d /etc/apt/sources.list.d ] && [ "$(ls -A /etc/apt/sources.list.d/*.list 2>/dev/null)" ]; then
     for file in /etc/apt/sources.list.d/*.list; do
         sed -n '/^deb\s/s//deb-src /p' "$file" >> /etc/apt/sources.list.d/deb-src.list
+     done
 fi
 
 apt-get update && eatmydata apt-get install --no-install-recommends -y \
