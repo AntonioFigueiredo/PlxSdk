@@ -43,7 +43,8 @@ git archive HEAD | bzip2 > ../plxsdk_0.1.0.orig.tar.bz2
 #     fi
 # fi
 # # changes end
-sed -n '/^deb\s/s//deb-src /p' /etc/apt/sources.list > /etc/apt/sources.list.d/deb-src.list # new
+# sed -n '/^deb\s/s//deb-src /p' /etc/apt/sources.list > /etc/apt/sources.list.d/deb-src.list # new
+sed -n '/^deb\s/s//deb-src /p' /etc/apt/sources.list.d > /etc/apt/sources.list.d/deb-src.list # debug
 
 # # added dh-kms, dkms, linux-libc-dev
 # apt-get update && eatmydata apt-get install --no-install-recommends -y \
