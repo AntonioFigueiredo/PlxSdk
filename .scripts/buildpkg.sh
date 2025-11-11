@@ -14,7 +14,7 @@ export SRC_DIR_NAME=source_dir
 # # changes start
 # apt-get update
 # git config --global --add safe.directory /github/workspace/source_dir # TODO is this realy needed?
-# git config --global --add safe.directory /github/workspace/debian/output/source_dir # same question here
+git config --global --add safe.directory /github/workspace/debian/output/source_dir
 # # changes end
 
 mkdir -p ${WORKING_DIR}
