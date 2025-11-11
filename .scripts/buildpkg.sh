@@ -70,10 +70,9 @@ apt-get update && eatmydata apt-get install --no-install-recommends -y \
      build-essential
 
 # #changes start
-# # Install build dependencies directly
-# eatmydata mk-build-deps --install --remove --tool "apt-get -o Debug::pkgProblemResolver=yes -y" debian/control
+# Install build dependencies directly
+eatmydata mk-build-deps --install --remove --tool "apt-get -o Debug::pkgProblemResolver=yes -y" debian/control
 # # changes end
-eatmydata install-build-deps.sh . # new
 
 # Generate ccache links
 dpkg-reconfigure ccache
