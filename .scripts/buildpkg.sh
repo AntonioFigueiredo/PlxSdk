@@ -44,7 +44,10 @@ git archive HEAD | bzip2 > ../plxsdk_0.1.0.orig.tar.bz2
 # fi
 # # changes end
 # sed -n '/^deb\s/s//deb-src /p' /etc/apt/sources.list > /etc/apt/sources.list.d/deb-src.list # new
-sed -n '/^deb\s/s//deb-src /p' /etc/apt/sources.list.d > /etc/apt/sources.list.d/deb-src.list # debug
+# sed -n '/^deb\s/s//deb-src /p' /etc/apt/sources.list.d > /etc/apt/sources.list.d/deb-src.list # debug
+> /etc/apt/sources.list.d/deb-src.list # empty the file first
+for file in /etc/apt/sources.list.d/*.list; do
+    sed -n '/^deb\s/s//deb-src /p' "$file" >> /etc/apt/sources.list.d/deb-src.list # >> appends instead of overwriting
 
 # # added dh-kms, dkms, linux-libc-dev
 # apt-get update && eatmydata apt-get install --no-install-recommends -y \
