@@ -11,9 +11,11 @@ export SRC_DIR_NAME=source_dir
 
 #echo "deb http://deb.debian.org/debian testing main" > /etc/apt/sources.list
 
-apt-get update
-git config --global --add safe.directory /github/workspace/source_dir
-git config --global --add safe.directory /github/workspace/debian/output/source_dir
+# # changes start
+# apt-get update
+# git config --global --add safe.directory /github/workspace/source_dir # TODO is this realy needed?
+# git config --global --add safe.directory /github/workspace/debian/output/source_dir # same question here
+# # changes end
 
 mkdir -p ${WORKING_DIR}
 cp -ra ${TOP_DIR}/${SRC_DIR_NAME} ${WORKING_DIR}
@@ -25,33 +27,48 @@ cd ${WORKING_DIR}/${SRC_DIR_NAME}
 git archive HEAD | bzip2 > ../plxsdk_0.1.0.orig.tar.bz2
 
 # Add deb-src entries
-if [ -f /etc/apt/sources.list ]; then
-    sed -n '/^deb\s/s//deb-src /p' /etc/apt/sources.list > /etc/apt/sources.list.d/deb-src.list
-elif [ -d /etc/apt/sources.list.d ]; then
-    if [ "$(ls -A /etc/apt/sources.list.d/*.list 2>/dev/null)" ]; then
-        for file in /etc/apt/sources.list.d/*.list; do
-            sed -n '/^deb\s/s//deb-src /p' "$file" >> /etc/apt/sources.list.d/deb-src.list
-        done
-    fi
-    if [ "$(ls -A /etc/apt/sources.list.d/*.sources 2>/dev/null)" ]; then
-        for file in /etc/apt/sources.list.d/*.sources; do
-            awk '/^Types:/ {if ($2 ~ /deb$/) print $0}' "$file" >> /etc/apt/sources.list.d/deb-src.list
-        done
-    fi
-fi
+# # changes start
+# if [ -f /etc/apt/sources.list ]; then
+#     sed -n '/^deb\s/s//deb-src /p' /etc/apt/sources.list > /etc/apt/sources.list.d/deb-src.list
+# elif [ -d /etc/apt/sources.list.d ]; then
+#     if [ "$(ls -A /etc/apt/sources.list.d/*.list 2>/dev/null)" ]; then
+#         for file in /etc/apt/sources.list.d/*.list; do
+#             sed -n '/^deb\s/s//deb-src /p' "$file" >> /etc/apt/sources.list.d/deb-src.list
+#         done
+#     fi
+#     if [ "$(ls -A /etc/apt/sources.list.d/*.sources 2>/dev/null)" ]; then
+#         for file in /etc/apt/sources.list.d/*.sources; do
+#             awk '/^Types:/ {if ($2 ~ /deb$/) print $0}' "$file" >> /etc/apt/sources.list.d/deb-src.list
+#         done
+#     fi
+# fi
+# # changes end
+sed -n '/^deb\s/s//deb-src /p' /etc/apt/sources.list > /etc/apt/sources.list.d/deb-src.list # new
 
+# # added dh-kms, dkms, linux-libc-dev
+# apt-get update && eatmydata apt-get install --no-install-recommends -y \
+#      aptitude \
+#      devscripts \
+#      ccache \
+#      equivs \
+#      build-essential \
+#      dh-dkms \
+#      dkms \
+#      linux-libc-dev
+
+#new
 apt-get update && eatmydata apt-get install --no-install-recommends -y \
      aptitude \
      devscripts \
      ccache \
      equivs \
-     build-essential \
-     dh-dkms \
-     dkms \
-     linux-libc-dev
+     build-essential
 
-# Install build dependencies directly
-eatmydata mk-build-deps --install --remove --tool "apt-get -o Debug::pkgProblemResolver=yes -y" debian/control
+# #changes start
+# # Install build dependencies directly
+# eatmydata mk-build-deps --install --remove --tool "apt-get -o Debug::pkgProblemResolver=yes -y" debian/control
+# # changes end
+eatmydata install-build-deps.sh . # new
 
 # Generate ccache links
 dpkg-reconfigure ccache
