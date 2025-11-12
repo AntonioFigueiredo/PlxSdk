@@ -5,7 +5,7 @@ on:
 
 permissions:
   checks: write
-  contents: read
+  contents: write
 
 env:
   RELEASE: unstable
