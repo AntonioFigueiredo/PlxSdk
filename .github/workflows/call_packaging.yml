@@ -5,4 +5,4 @@ on:
 
 jobs:
     call-packaging:
-        uses: ./.github/workflows/packaging.yml
+        uses: AntonioFigueiredo/PackagingDebRpm/.github/workflows/packaging.yml@main
