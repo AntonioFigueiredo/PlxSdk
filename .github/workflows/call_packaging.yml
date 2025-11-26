@@ -1,0 +1,8 @@
+name: Call Packaging Workflow
+
+on:
+    push
+
+jobs:
+    call-packaging:
+        uses: ./.github/workflows/packaging.yml
