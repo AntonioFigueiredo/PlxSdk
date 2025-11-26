@@ -6,3 +6,5 @@ on:
 jobs:
     call-packaging:
         uses: AntonioFigueiredo/PackagingDebRpm/.github/workflows/packaging.yml@main
+        with:
+            project_name: PlxSdk
