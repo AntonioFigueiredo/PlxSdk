@@ -10,3 +10,6 @@ jobs:
             project_name: plxsdk
             build_rpm: true
             build_deb: true
+            
+            deb_matrix: '{"container":["debian:stable","debian:bullseye","debian:unstable","debian:testing"]}'
+            rpm_matrix: '{"container":["rockylinux:9"]}'
