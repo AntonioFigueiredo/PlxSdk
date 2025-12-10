@@ -8,5 +8,5 @@ jobs:
         uses: AntonioFigueiredo/PackagingDebRpm/.github/workflows/packaging.yml@main
         with:
             project_name: plxsdk
-            build_rpm: false
+            build_rpm: true
             build_deb: false
