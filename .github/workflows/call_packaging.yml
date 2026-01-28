@@ -8,8 +8,9 @@ jobs:
         uses: AntonioFigueiredo/PackagingDebRpm/.github/workflows/packaging.yml@main
         with:
             project_name: plxsdk
-            build_rpm: true
-            build_deb: true
+            build_rpm: false
+            build_deb: false
+            sign_packages: true
             
             deb_matrix: '{"container":["debian:stable","debian:bullseye","debian:unstable","debian:testing"]}'
             rpm_matrix: '{"container":["rockylinux:9"]}'
