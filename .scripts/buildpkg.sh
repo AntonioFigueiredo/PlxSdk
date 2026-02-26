@@ -9,13 +9,7 @@ export CCACHE_DIR=${TOP_DIR}/.ccache
 export WORKING_DIR=${TOP_DIR}/debian/output
 export SRC_DIR_NAME=source_dir
 
-#echo "deb http://deb.debian.org/debian testing main" > /etc/apt/sources.list
-
-# # changes start
-# apt-get update
-# git config --global --add safe.directory /github/workspace/source_dir # TODO is this realy needed?
 git config --global --add safe.directory /github/workspace/debian/output/source_dir
-# # changes end
 
 mkdir -p ${WORKING_DIR}
 cp -ra ${TOP_DIR}/${SRC_DIR_NAME} ${WORKING_DIR}
@@ -24,44 +18,15 @@ cp -ra ${TOP_DIR}/${SRC_DIR_NAME} ${WORKING_DIR}
 cd ${WORKING_DIR}/${SRC_DIR_NAME}
 
 # Build orig-tar.
-git archive HEAD | bzip2 > ../plxsdk_0.1.0.orig.tar.bz2
+git archive HEAD | bzip2 > ../${PROJECT_NAME}_0.1.0.orig.tar.bz2
 
 # Add deb-src entries
-# # changes start
-# if [ -f /etc/apt/sources.list ]; then
-#     sed -n '/^deb\s/s//deb-src /p' /etc/apt/sources.list > /etc/apt/sources.list.d/deb-src.list
-# elif [ -d /etc/apt/sources.list.d ]; then
-#     if [ "$(ls -A /etc/apt/sources.list.d/*.list 2>/dev/null)" ]; then
-#         for file in /etc/apt/sources.list.d/*.list; do
-#             sed -n '/^deb\s/s//deb-src /p' "$file" >> /etc/apt/sources.list.d/deb-src.list
-#         done
-#     fi
-#     if [ "$(ls -A /etc/apt/sources.list.d/*.sources 2>/dev/null)" ]; then
-#         for file in /etc/apt/sources.list.d/*.sources; do
-#             awk '/^Types:/ {if ($2 ~ /deb$/) print $0}' "$file" >> /etc/apt/sources.list.d/deb-src.list
-#         done
-#     fi
-# fi
-# # changes end
-# sed -n '/^deb\s/s//deb-src /p' /etc/apt/sources.list > /etc/apt/sources.list.d/deb-src.list # new
-# sed -n '/^deb\s/s//deb-src /p' /etc/apt/sources.list.d > /etc/apt/sources.list.d/deb-src.list # debug
 > /etc/apt/sources.list.d/deb-src.list # empty the file first
 for file in /etc/apt/sources.list.d/*.list; do
     sed -n '/^deb\s/s//deb-src /p' "$file" >> /etc/apt/sources.list.d/deb-src.list # >> appends instead of overwriting
 done
 
-# # added dh-kms, dkms, linux-libc-dev
-# apt-get update && eatmydata apt-get install --no-install-recommends -y \
-#      aptitude \
-#      devscripts \
-#      ccache \
-#      equivs \
-#      build-essential \
-#      dh-dkms \
-#      dkms \
-#      linux-libc-dev
-
-#new
+# Update package lists and install build dependencies
 apt-get update && eatmydata apt-get install --no-install-recommends -y \
      aptitude \
      devscripts \
@@ -69,10 +34,8 @@ apt-get update && eatmydata apt-get install --no-install-recommends -y \
      equivs \
      build-essential
 
-# #changes start
 # Install build dependencies directly
 eatmydata mk-build-deps --install --remove --tool "apt-get -o Debug::pkgProblemResolver=yes -y" debian/control
-# # changes end
 
 # Generate ccache links
 dpkg-reconfigure ccache
@@ -83,6 +46,13 @@ ccache -z
 
  # Create build user and fix permissions
 useradd buildci
+
+# Copy GPG keyring to buildci user
+mkdir -p /home/buildci/.gnupg
+cp -r /root/.gnupg/* /home/buildci/.gnupg/ 2>/dev/null || true
+chown -R buildci:buildci /home/buildci/.gnupg
+chmod 700 /home/buildci/.gnupg
+
 chown -R buildci. ${WORKING_DIR} ${CCACHE_DIR}
 
 # Define buildlog filename
@@ -95,7 +65,7 @@ BUILD_LOGFILE="${WORKING_DIR}/${BUILD_LOGFILE_SOURCE}_${BUILD_LOGFILE_VERSION}_$
 # Build package as user buildci
 ls -la
 ls -la ..
-su buildci -c "eatmydata dpkg-buildpackage ${DB_BUILD_PARAM}" |& OUTPUT_FILENAME=${BUILD_LOGFILE} filter-output
+su buildci -c "eatmydata dpkg-buildpackage -kBD78A430515E1D36 ${DB_BUILD_PARAM}" |& OUTPUT_FILENAME=${BUILD_LOGFILE} filter-output
 
 ls -la
 find
