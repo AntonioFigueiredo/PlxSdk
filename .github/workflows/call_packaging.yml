@@ -10,7 +10,7 @@ jobs:
         with:
             project_name: plxsdk
             build_rpm: true
-            build_deb: false
+            build_deb: true
             sign_packages: true
             
             deb_matrix: '{"container":["debian:stable","debian:bullseye","debian:unstable","debian:testing"]}'
