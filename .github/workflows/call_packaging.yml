@@ -9,8 +9,8 @@ jobs:
         secrets: inherit
         with:
             project_name: plxsdk
-            build_rpm: false
-            build_deb: true
+            build_rpm: true
+            build_deb: false
             sign_packages: true
             
             deb_matrix: '{"container":["debian:stable","debian:bullseye","debian:unstable","debian:testing"]}'
