@@ -1,4 +1,4 @@
-name: Call Packaging Workflow 
+name: Call Packaging Workflow
 
 on:
     push
@@ -9,7 +9,7 @@ jobs:
         secrets: inherit
         with:
             project_name: plxsdk
-            build_rpm: false
+            build_rpm: true
             build_deb: true
             sign_packages: true
             
