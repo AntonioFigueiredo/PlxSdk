@@ -19,36 +19,38 @@ PlxSDK
 
 %build
 export TERM=dumb
-make -C src/PlxApi PLX_SDK_DIR=$(pwd)/src
+make -C PlxApi PLX_SDK_DIR=$(pwd)
 
 %install
 rm -rf %{buildroot}
 
 # Install complete SDK source tree for driver/module builds
 mkdir -p %{buildroot}/usr/src/%{name}-%{version}/
-
-# Install DKMS config if present
-if [ -f debian/plxsdk-dkms.dkms ]; then
-    cp debian/plxsdk-dkms.dkms %{buildroot}/usr/src/%{name}-%{version}/dkms.conf
-fi
+cp -a Driver %{buildroot}/usr/src/%{name}-%{version}/
+cp -a Include %{buildroot}/usr/src/%{name}-%{version}/
+cp -a Makefiles %{buildroot}/usr/src/%{name}-%{version}/
+cp -a PlxApi %{buildroot}/usr/src/%{name}-%{version}/
+cp -a Bin %{buildroot}/usr/src/%{name}-%{version}/
+cp -a Samples %{buildroot}/usr/src/%{name}-%{version}/
+cp -a Makefile %{buildroot}/usr/src/%{name}-%{version}/
 
 # Install static library
 mkdir -p %{buildroot}/usr/lib64
-cp src/PlxApi/Library/PlxApi.a %{buildroot}/usr/lib64/ || true
+cp PlxApi/Library/PlxApi.a %{buildroot}/usr/lib64/ || true
 
 # Install headers
 mkdir -p %{buildroot}/usr/include/plxsdk
-cp -a src/Include/* %{buildroot}/usr/include/plxsdk/
+cp -a Include/* %{buildroot}/usr/include/plxsdk/
 
 # Install utility scripts/binaries
 mkdir -p %{buildroot}/usr/bin
-cp src/Bin/Plx_load %{buildroot}/usr/bin/
-cp src/Bin/Plx_unload %{buildroot}/usr/bin/
-cp src/Bin/startlog %{buildroot}/usr/bin/
+cp Bin/Plx_load %{buildroot}/usr/bin/
+cp Bin/Plx_unload %{buildroot}/usr/bin/
+cp Bin/startlog %{buildroot}/usr/bin/
 
 # Install sample source code
 mkdir -p %{buildroot}/usr/share/plxsdk/examples
-cp -a src/Samples/* %{buildroot}/usr/share/plxsdk/examples/
+cp -a Samples/* %{buildroot}/usr/share/plxsdk/examples/
 
 %files
 %defattr(-,root,root)
