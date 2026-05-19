@@ -313,10 +313,10 @@ Dispatch_mmap(
      **********************************************************/
 
     // Set the region as page-locked
-    vma->vm_flags |= VM_RESERVED;
+    Plx_set_vm_flags(vma, VM_RESERVED);
 
     // Set flag for I/O resource
-    vma->vm_flags |= VM_IO;
+    Plx_set_vm_flags(vma, VM_IO);
 
     // The region must be marked as non-cached
     vma->vm_page_prot =
@@ -325,7 +325,7 @@ Dispatch_mmap(
             );
 
     // Set flag for I/O resource
-    vma->vm_flags |= VM_IO;
+    Plx_set_vm_flags(vma, VM_IO);
 
     // The region must be marked as non-cached
     vma->vm_page_prot =
@@ -391,7 +391,7 @@ Dispatch_IoControl(
 
 
     // Verify interface
-    if (iminor(filp->f_dentry->d_inode) != PLX_MNGMT_INTERFACE)
+    if (iminor(Plx_file_inode(filp)) != PLX_MNGMT_INTERFACE)
     {
         ErrorPrintf(("ERROR - Device interface does not exist\n"));
         return (-ENODEV);

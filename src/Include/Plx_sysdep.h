@@ -80,6 +80,32 @@
 
 
 /***********************************************************
+ * file_inode / f_dentry compatibility
+ **********************************************************/
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,19,0))
+    #define Plx_file_inode(_filp)      ((_filp)->f_dentry->d_inode)
+#else
+    #define Plx_file_inode(_filp)      file_inode((_filp))
+#endif
+
+
+
+
+/***********************************************************
+ * vm_flags compatibility
+ *
+ * Newer kernels do not allow direct writes to vm_flags.
+ **********************************************************/
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6,3,0))
+    #define Plx_set_vm_flags(vma, flags)   vm_flags_set((vma), (flags))
+#else
+    #define Plx_set_vm_flags(vma, flags)   ((vma)->vm_flags |= (flags))
+#endif
+
+
+
+
+/***********************************************************
  * INIT_WORK & INIT_DELAYED_WORK
  *
  * This macro initializes a work structure with the function
