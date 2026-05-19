@@ -44,6 +44,8 @@
     #include <linux/version.h>
 #endif
 
+#include <linux/pci.h>
+
 
 // Only allow 2.6 and higher kernels
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,0)
