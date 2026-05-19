@@ -273,6 +273,89 @@
 
 
 /***********************************************************
+ * Page reference compatibility
+ *
+ * page_cache_release() was replaced by put_page().
+ **********************************************************/
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(4,6,0))
+    #define Plx_page_release(page)          page_cache_release((page))
+#else
+    #define Plx_page_release(page)          put_page((page))
+#endif
+
+
+
+
+/***********************************************************
+ * mmap semaphore / lock compatibility
+ *
+ * mmap_sem was renamed to mmap_lock in newer kernels, which
+ * also introduced dedicated mmap_read_lock/unlock helpers.
+ **********************************************************/
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(5,8,0))
+    #define Plx_mmap_read_lock(mm)          mmap_read_lock((mm))
+    #define Plx_mmap_read_unlock(mm)        mmap_read_unlock((mm))
+#else
+    #define Plx_mmap_read_lock(mm)          down_read(&((mm)->mmap_sem))
+    #define Plx_mmap_read_unlock(mm)        up_read(&((mm)->mmap_sem))
+#endif
+
+
+
+
+/***********************************************************
+ * get_user_pages compatibility
+ *
+ * Newer kernels replaced the old multi-parameter interface
+ * with a gup_flags-based API.
+ **********************************************************/
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(4,6,0))
+    static inline long
+    Plx_get_user_pages(
+        unsigned long  start,
+        unsigned long  nr_pages,
+        BOOLEAN        bWriteAccess,
+        struct page  **pages
+        )
+    {
+        return get_user_pages(
+            current,
+            current->mm,
+            start,
+            nr_pages,
+            bWriteAccess,
+            0,
+            pages,
+            NULL
+            );
+    }
+#else
+    static inline long
+    Plx_get_user_pages(
+        unsigned long  start,
+        unsigned long  nr_pages,
+        BOOLEAN        bWriteAccess,
+        struct page  **pages
+        )
+    {
+        unsigned int gup_flags;
+
+
+        gup_flags = bWriteAccess ? FOLL_WRITE : 0;
+
+        return get_user_pages(
+            start,
+            nr_pages,
+            gup_flags,
+            pages
+            );
+    }
+#endif
+
+
+
+
+/***********************************************************
  * is_virtfn field in pci_dev   - Added in 2.6.30
  *
  * For SR-IOV devices, there is an 'is_virtfn' field in the

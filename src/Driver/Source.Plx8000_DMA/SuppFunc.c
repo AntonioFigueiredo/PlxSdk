@@ -813,7 +813,7 @@ PlxSglDmaTransferComplete(
         }
 
         // Unlock the page
-        page_cache_release(
+        Plx_page_release(
             pdx->DmaInfo[channel].PageList[i]
             );
     }
@@ -938,26 +938,22 @@ PlxLockBufferAndBuildSgl(
     }
 
     // Obtain the mmap reader/writer semaphore
-    down_read(
-        &current->mm->mmap_sem
+    Plx_mmap_read_lock(
+        current->mm
         );
 
     // Attempt to lock the user buffer into memory
     rc =
-        get_user_pages(
-            current,                          // Task performing I/O
-            current->mm,                      // The tasks memory-management structure
+        Plx_get_user_pages(
             UserVa & PAGE_MASK,               // Page-aligned starting address of user buffer
             TotalDescr,                       // Length of the buffer in pages
             bDirPciToUser,                    // Map for write access (i.e. user app performing a read)?
-            0,                                // Do not force an override of page protections
-            pdx->DmaInfo[channel].PageList,   // Will contain list of page pointers describing buffer
-            NULL                              // Will contain list of associated VMAs
+            pdx->DmaInfo[channel].PageList    // Will contain list of page pointers describing buffer
             );
 
     // Release mmap semaphore
-    up_read(
-        &current->mm->mmap_sem
+    Plx_mmap_read_unlock(
+        current->mm
         );
 
     if (rc != TotalDescr)
@@ -972,6 +968,13 @@ PlxLockBufferAndBuildSgl(
                 "ERROR - Only able to map %d of %d total pages\n",
                 rc, TotalDescr
                 ));
+        }
+
+        while (rc-- > 0)
+        {
+            Plx_page_release(
+                pdx->DmaInfo[channel].PageList[rc]
+                );
         }
 
         kfree( pdx->DmaInfo[channel].PageList );
