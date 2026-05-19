@@ -40,7 +40,7 @@
 #include <linux/module.h>
 #include <linux/init.h>
 #include <linux/version.h>
-#include <linux/vermagic.h>
+#include <generated/utsrelease.h>
 #include "Dispatch.h"
 #include "Driver.h"
 #include "PciFunc.h"
