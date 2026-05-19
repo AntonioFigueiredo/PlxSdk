@@ -356,6 +356,23 @@
 
 
 /***********************************************************
+ * access_ok compatibility
+ *
+ * Older kernels required an access type argument while newer
+ * kernels infer the access mode from the subsequent copy helper.
+ **********************************************************/
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(5,0,0))
+    #define Plx_access_ok_read(addr, size)   access_ok(VERIFY_READ,  (addr), (size))
+    #define Plx_access_ok_write(addr, size)  access_ok(VERIFY_WRITE, (addr), (size))
+#else
+    #define Plx_access_ok_read(addr, size)   access_ok((addr), (size))
+    #define Plx_access_ok_write(addr, size)  access_ok((addr), (size))
+#endif
+
+
+
+
+/***********************************************************
  * is_virtfn field in pci_dev   - Added in 2.6.30
  *
  * For SR-IOV devices, there is an 'is_virtfn' field in the

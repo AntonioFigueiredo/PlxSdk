@@ -1900,7 +1900,7 @@ PlxPciBarSpaceTransfer(
         if (bReadOperation)
         {
             // Read from device = Write to user buffer
-            if (access_ok(
+            if (Plx_access_ok_write(
                     pBuffer,
                     BytesToTransfer
                     ) == FALSE)
@@ -1912,7 +1912,7 @@ PlxPciBarSpaceTransfer(
         else
         {
             // Write to device = Read from user buffer
-            if (access_ok(
+            if (Plx_access_ok_read(
                     pBuffer,
                     BytesToTransfer
                     ) == FALSE)
