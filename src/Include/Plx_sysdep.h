@@ -94,9 +94,11 @@
 /***********************************************************
  * vm_flags compatibility
  *
- * Newer kernels do not allow direct writes to vm_flags.
+ * Newer kernels and some enterprise backports do not allow
+ * direct writes to vm_flags.
  **********************************************************/
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6,3,0))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6,3,0)) || \
+    ((LINUX_VERSION_CODE >= KERNEL_VERSION(5,14,0)) && defined(RED_HAT_LINUX_KERNEL))
     #define Plx_set_vm_flags(vma, flags)   vm_flags_set((vma), (flags))
 #else
     #define Plx_set_vm_flags(vma, flags)   ((vma)->vm_flags |= (flags))
