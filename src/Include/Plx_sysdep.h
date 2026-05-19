@@ -214,6 +214,10 @@
  *
  * In kernel 2.6, pci_find_* was deprecated and replaced
  * with pci_get_*.  The new functions were official in 2.6.19.
+ * Modern kernels no longer expose pci_get_bus_and_slot() as a
+ * suitable public helper, so use pci_find_bus() + pci_get_slot()
+ * through a compatibility wrapper instead.
+ *
  * If pci_get_* functions are used, the kernel increments the
  * reference count to the device.  To decement the count, the
  * function pci_dev_put() must be called.
@@ -224,8 +228,24 @@
     #define Plx_pci_dev_put( pPciDev )
 #else
     #define Plx_pci_get_device          pci_get_device
-    #define Plx_pci_get_bus_and_slot    pci_get_bus_and_slot
     #define Plx_pci_dev_put             pci_dev_put
+
+    static inline struct pci_dev *
+    Plx_pci_get_bus_and_slot(
+        unsigned int bus,
+        unsigned int devfn
+        )
+    {
+        struct pci_bus *pBus;
+
+
+        pBus = pci_find_bus(0, bus);
+
+        if (pBus == NULL)
+            return NULL;
+
+        return pci_get_slot(pBus, devfn);
+    }
 #endif
 
 
