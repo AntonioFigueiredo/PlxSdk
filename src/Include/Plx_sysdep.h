@@ -306,8 +306,11 @@
 /***********************************************************
  * get_user_pages compatibility
  *
- * Newer kernels replaced the old multi-parameter interface
- * with a gup_flags-based API.
+ * The helper changed signature several times:
+ *   - pre-4.6 kernels pass task/mm explicitly
+ *   - 4.6+ kernels drop task/mm
+ *   - 4.9+ kernels replace write/force with gup_flags
+ *   - newer kernels drop the vmas output parameter
  **********************************************************/
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(4,6,0))
     static inline long
@@ -325,6 +328,46 @@
             nr_pages,
             bWriteAccess,
             0,
+            pages,
+            NULL
+            );
+    }
+#elif (LINUX_VERSION_CODE < KERNEL_VERSION(4,9,0))
+    static inline long
+    Plx_get_user_pages(
+        unsigned long  start,
+        unsigned long  nr_pages,
+        BOOLEAN        bWriteAccess,
+        struct page  **pages
+        )
+    {
+        return get_user_pages(
+            start,
+            nr_pages,
+            bWriteAccess,
+            0,
+            pages,
+            NULL
+            );
+    }
+#elif (LINUX_VERSION_CODE < KERNEL_VERSION(6,5,0))
+    static inline long
+    Plx_get_user_pages(
+        unsigned long  start,
+        unsigned long  nr_pages,
+        BOOLEAN        bWriteAccess,
+        struct page  **pages
+        )
+    {
+        unsigned int gup_flags;
+
+
+        gup_flags = bWriteAccess ? FOLL_WRITE : 0;
+
+        return get_user_pages(
+            start,
+            nr_pages,
+            gup_flags,
             pages,
             NULL
             );
