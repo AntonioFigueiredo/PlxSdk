@@ -225,6 +225,13 @@ endif
 
 EXTRA_CFLAGS += $(PLX_OPT) $(PLX_INC_DIR)
 
+# Modern kernel builds expect module-local flags via ccflags-y. Keep
+# EXTRA_CFLAGS for older kernels and non-DKMS builds, but mirror the same
+# include/define set for current Kbuild.
+ifeq ($(TGT_TYPE), Driver)
+    ccflags-y += $(PLX_OPT) $(PLX_INC_DIR)
+endif
+
 
 
 #=============================================================================
