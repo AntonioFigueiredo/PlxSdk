@@ -671,7 +671,7 @@ PlxProbeForEcamBase(
 
     // Map RSDT table
     Va_RSDT =
-        ioremap_prot(
+        Plx_ioremap_prot(
             PLX_PTR_TO_INT( pAcpi_Addr_RSDT ),
             1024,
             0
@@ -715,7 +715,7 @@ PlxProbeForEcamBase(
 
         // Map table
         Va_Table =
-            ioremap_prot(
+            Plx_ioremap_prot(
                 PLX_PTR_TO_INT( pAddress ),
                 200,
                 0

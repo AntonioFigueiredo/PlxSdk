@@ -132,16 +132,28 @@
 
 
 /***********************************************************
- * ioremap_prot
+ * Plx_ioremap_prot
  *
- * This function is supported after 2.6.27. PLX drivers only
- * used it for probing ACPI tables. In newer kernels, calls
- * to ioremap() for ACPI locations report errors since the
- * default flags conflict with kernel mappings.
+ * PLX drivers only use ioremap_prot() while probing ACPI
+ * tables. The kernel signature changed in 7.x from an
+ * unsigned long flags value to pgprot_t, so normalize that
+ * difference here.
  **********************************************************/
+static inline void __iomem *
+Plx_ioremap_prot(
+    resource_size_t  addr,
+    unsigned long    size,
+    unsigned long    flags
+    )
+{
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27))
-    #define ioremap_prot(addr,size,flags)     ioremap((addr), (size))
+    return ioremap(addr, size);
+#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(7,0,0))
+    return ioremap_prot(addr, size, __pgprot(flags));
+#else
+    return ioremap_prot(addr, size, flags);
 #endif
+}
 
 
 
