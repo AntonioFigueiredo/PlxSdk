@@ -1,0 +1,7 @@
+[plxsdk]
+name=plxsdk RPM Repository
+baseurl=https://antoniofigueiredo.github.io/plxsdk/rpm/rockylinux-9/packages/
+enabled=1
+gpgcheck=1
+repo_gpgcheck=0
+gpgkey=https://antoniofigueiredo.github.io/plxsdk/rpm/rockylinux-9/RPM-GPG-KEY-plxsdk

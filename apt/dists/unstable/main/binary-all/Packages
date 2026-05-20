@@ -1,0 +1,21 @@
+Package: plxsdk-dkms
+Priority: optional
+Section: kernel
+Installed-Size: 3668
+Maintainer: Antonio Figueiredo <figueiredo@physik.uni-bonn.de>
+Architecture: all
+Source: plxsdk
+Version: 0.1.0-1
+Provides: plxsdk
+Depends: dkms (>= 2.1.0.0), make, gcc
+Recommends: linux-headers-amd64 | linux-headers-686-pae | linux-headers-686 | linux-headers
+Filename: pool/main/p/plxsdk/plxsdk-dkms_0.1.0-1_all.deb
+Size: 206180
+MD5sum: 0058ac72316316bcdb7a6e9ba9b93416
+SHA1: a4b31051309707c183561a0bc4c2cd1dca523426
+SHA256: 2acb567109bbb4f0d42ebd8473b1d5907781c5ecc603dd5befcdd8bc08372dee
+SHA512: fb9b94591e84d7b6ffe8dfc850a982f96247ac6a15b7cc1e6afbdd61a19d5269ba9268b13c0e8a69423096f8bddd8ab2c6526e7da6e8e863e7037193ac61db1b
+Description: PLX SDK kernel module and development tools
+ to be built with DKMS.
+Homepage: https://github.com/AntonioFigueiredo/PlxSdk
+

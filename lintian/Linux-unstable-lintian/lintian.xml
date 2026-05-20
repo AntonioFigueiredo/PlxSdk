@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<testsuites disabled="0" errors="0" failures="9" tests="19" time="0.0">
+	<testsuite disabled="0" errors="0" failures="9" name="Lintian2Junit" skipped="0" tests="19" time="0">
+		<testcase name="plxsdk-dkms">
+			<failure type="failure" message="executable-not-elf-or-script [usr/bin/Plx_load]"/>
+		</testcase>
+		<testcase name="plxsdk-dkms">
+			<failure type="failure" message="executable-not-elf-or-script [usr/bin/Plx_unload]"/>
+		</testcase>
+		<testcase name="plxsdk-dkms">
+			<failure type="failure" message="executable-not-elf-or-script [usr/bin/startlog]"/>
+		</testcase>
+		<testcase name="plxsdk-dkms">
+			<failure type="failure" message="initial-upload-closes-no-bugs [usr/share/doc/plxsdk-dkms/changelog.Debian.gz:1]"/>
+		</testcase>
+		<testcase name="plxsdk source">
+			<failure type="failure" message="no-debian-changes"/>
+		</testcase>
+		<testcase name="plxsdk-dkms">
+			<failure type="failure" message="no-manual-page [usr/bin/Plx_load]"/>
+		</testcase>
+		<testcase name="plxsdk-dkms">
+			<failure type="failure" message="no-manual-page [usr/bin/Plx_unload]"/>
+		</testcase>
+		<testcase name="plxsdk-dkms">
+			<failure type="failure" message="no-manual-page [usr/bin/startlog]"/>
+		</testcase>
+		<testcase name="plxsdk source">
+			<failure type="failure" message="no-newline-at-end [debian/changelog]"/>
+		</testcase>
+		<testcase name="plxsdk source"/>
+		<testcase name="plxsdk-dkms"/>
+		<testcase name="plxsdk source"/>
+		<testcase name="plxsdk-dkms"/>
+		<testcase name="plxsdk-dkms"/>
+		<testcase name="plxsdk-dkms"/>
+		<testcase name="plxsdk-dkms"/>
+		<testcase name="plxsdk source"/>
+		<testcase name="plxsdk source"/>
+		<testcase name="plxsdk source"/>
+	</testsuite>
+</testsuites>
+
