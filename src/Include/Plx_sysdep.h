@@ -141,6 +141,18 @@
  **********************************************************/
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27))
     #define ioremap_prot(addr,size,flags)     ioremap((addr), (size))
+#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(6,5,0))
+    static inline void __iomem *
+    Plx_ioremap_prot(
+        resource_size_t  addr,
+        unsigned long    size,
+        unsigned long    flags
+        )
+    {
+        return ioremap_prot(addr, size, __pgprot(flags));
+    }
+
+    #define ioremap_prot(addr,size,flags)     Plx_ioremap_prot((addr), (size), (flags))
 #endif
 
 
