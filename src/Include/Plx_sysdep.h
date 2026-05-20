@@ -362,7 +362,8 @@
             NULL
             );
     }
-#elif (LINUX_VERSION_CODE < KERNEL_VERSION(6,5,0))
+#elif ((LINUX_VERSION_CODE < KERNEL_VERSION(6,5,0)) && \
+       !((LINUX_VERSION_CODE >= KERNEL_VERSION(5,14,0)) && defined(RED_HAT_LINUX_KERNEL)))
     static inline long
     Plx_get_user_pages(
         unsigned long  start,
