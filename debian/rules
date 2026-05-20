@@ -7,8 +7,9 @@ include /usr/share/dpkg/pkg-info.mk
 	dh $@ --with dkms
 
 override_dh_install:
-	dh_install src/Driver/* usr/src/plxsdk-$(DEB_VERSION)/
-	dh_install src/PlxApi/* usr/src/plxsdk-$(DEB_VERSION)/
+	dh_installdirs usr/src/plxsdk-$(DEB_VERSION)/ usr/include/plxsdk/ usr/share/plxsdk/examples/ usr/bin/
+	dh_install src/* usr/src/plxsdk-$(DEB_VERSION)/
+	dh_install src/Include/* usr/include/plxsdk/
 	dh_install src/Bin/* usr/bin/
 	dh_install src/Samples/* usr/share/plxsdk/examples/
 

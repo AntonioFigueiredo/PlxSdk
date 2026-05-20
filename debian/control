@@ -11,7 +11,7 @@ Vcs-Git: https://github.com/AntonioFigueiredo/PlxSdk
 
 Package: plxsdk-dkms
 Architecture: all
-Depends: ${misc:Depends}
+Depends: ${misc:Depends}, dkms, make, gcc
 Recommends: linux-headers-amd64 | linux-headers-686-pae | linux-headers-686 | linux-headers
 Provides: plxsdk
 Description: PLX SDK kernel module and development tools
